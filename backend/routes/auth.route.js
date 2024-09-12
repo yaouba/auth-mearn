@@ -1,5 +1,15 @@
 import { Router } from "express";
-import { forgotPassword, resetPassword, logout, verifyEmail, login, signup } from "../controllers/auth.controllers.js";
+import { 
+    forgotPassword, 
+    resetPassword, 
+    verifyEmail, 
+    checkAuth,
+    logout,  
+    login, 
+    signup 
+} from "../controllers/auth.controllers.js";
+import { verifyToken } from "../middlewares/verifyToken.js";
+
 
 const router = Router();
 
@@ -7,6 +17,8 @@ const router = Router();
 router.post('/register', signup);
 
 router.post('/login', login);
+
+router.get('/check-auth', verifyToken, checkAuth);
 
 router.post('/logout', logout)
 
