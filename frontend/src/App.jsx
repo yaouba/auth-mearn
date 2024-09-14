@@ -1,6 +1,7 @@
 import { Route, Routes } from "react-router-dom";
 import FloatingShape from "./components/FloatingShape";
 import SignupPage from "./pages/SignupPage";
+import LoginPage from "./pages/LoginPage";
 
 function App() {
   return (
@@ -31,7 +32,7 @@ function App() {
       <Routes>
         <Route path="/" element={"Home"} />
         <Route path="/signup" element={<SignupPage />} />
-        <Route path="/login" element={"Home"} />
+        <Route path="/login" element={<LoginPage />} />
 
 
       </Routes>
