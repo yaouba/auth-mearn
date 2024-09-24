@@ -6,7 +6,7 @@ import {
     WELCOME_EMAIL_TEMPLATE
 } from "./emailTemplate.js";
 
-export const sendVerificationEmail = async (email, name) => {
+export const sendVerificationEmail = async (email, verificationCode) => {
     const recipient = [{ email }];
 
     try {
@@ -14,7 +14,7 @@ export const sendVerificationEmail = async (email, name) => {
             from: sender,
             to: recipient,
             subject: "Verify your email",
-            html: VERIFICATION_EMAIL_TEMPLATE.replace("{name}", name),
+            html: VERIFICATION_EMAIL_TEMPLATE.replace("{verificationCode}", verificationCode),
             category: "Email Verification",
         });
 
