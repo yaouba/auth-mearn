@@ -1,14 +1,17 @@
 import { useEffect, useRef, useState } from "react"
 import { motion } from 'framer-motion'
 import { Loader } from 'lucide-react'
+import toast from "react-hot-toast"
 import { useNavigate } from "react-router-dom"
+import { useAuthStore } from '../store/authStore'
 
 
 const EmailVerificationPage = () => {
     const [code, setCode] = useState(['', '', '', '', '', ''])
     const inputRefs = useRef([])
     const navigate = useNavigate()
-    const [loading, setLoading] = useState(false)
+
+    const { verifyEmail, error, isLoading } = useAuthStore();
 
 
     const handleChange = (index, value) => {
@@ -42,11 +45,17 @@ const EmailVerificationPage = () => {
     }
 
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault()
         const verificationCode = code.join('')
 
-        console.log(verificationCode)
+        try {
+            await verifyEmail(verificationCode)
+            navigate('/')
+            toast.success("Email verified successfully")
+        } catch (error) {
+            console.log(error)
+        }
     }
 
     useEffect(() => {
@@ -86,15 +95,17 @@ const EmailVerificationPage = () => {
                     ))}
                         
                     </div>
+
+                    {error && <p className="text-red-500 font-semibold text-sm text-center mt-2">{error}</p>}
                     
                     <motion.button
                         className='mt-5 w-full py-3 px-4 bg-gradient-to-r from-green-500 to-emerald-600 text-white font-bold rounded-lg shadow-lg hover:from-green-600 hover:to-emerald-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 focus:ring-offset-gray-900 transition duration-200'
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
                         type='submit'
-                        disabled={loading}
+                        disabled={isLoading}
                     >
-                        {loading ? <Loader className="size-5 text-white animate-spin mx-auto" /> : 'Verify'}    
+                        {isLoading ? <Loader className="size-5 text-white animate-spin mx-auto" /> : 'Verify'}    
                     </motion.button>
                 </form>
             </div>
